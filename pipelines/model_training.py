@@ -1,5 +1,6 @@
 from models import GradientBoostedDecisionTrees
-
+from zenml import step
+from zenml.integrations import pycaret
 # Orchestrate model training
 
 
@@ -9,8 +10,9 @@ class ModelTrainingStep:
         self.params = params
         self.model = model
 
+    @step
     def execute(self):
+        print("Hemos entrau menor")
         X_train, y_train = self.train_data
-        self.model.grid_search(X_train, y_train)
-        # self.model.save_model()
+        self.model = self.model.grid_search(X_train, y_train)
         return self.model

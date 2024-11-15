@@ -52,6 +52,7 @@ from sklearn.model_selection import GridSearchCV
 from sklearn import metrics
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.preprocessing import label_binarize
+from zenml import step
 
 
 class GradientBoostedDecisionTrees:

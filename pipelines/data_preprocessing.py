@@ -1,6 +1,10 @@
 import pandas as pd
-from utils import shuffle_split, repeated_stratified_k_fold
+import numpy as np
+from typing_extensions import Annotated
+from typing_extensions import Tuple
 
+from utils import shuffle_split, repeated_stratified_k_fold
+from zenml import step
 
 # Se debe cambiar nombre  a PreProcessing
 
@@ -20,10 +24,18 @@ class DataPreprocessingStep:
 
     # Organize the dataframe and split the dataset into training and testing sets.
 
-    def preprocess_data(self):
+    @step
+    def preprocess_data(self) -> Tuple[
+        Annotated[np.ndarray, "X_train"],
+        Annotated[np.ndarray, "X_test"],
+        Annotated[np.ndarray, "y_train"],
+        Annotated[np.ndarray, "y_test"]
+    ]:
         self.load_data()
         X_train, X_test, y_train, y_test = shuffle_split(self.df)
+
+        return X_train, X_test, y_train, y_test
+
+    def cross_validation(self):
         cross_validation = repeated_stratified_k_fold(
             self.n_splits, self.n_repeats, self.random_state)
-
-        return X_train, X_test, y_train, y_test, cross_validation

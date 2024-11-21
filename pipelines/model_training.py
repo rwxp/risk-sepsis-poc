@@ -5,14 +5,13 @@ from zenml.integrations import pycaret
 
 
 class ModelTrainingStep:
-    def __init__(self, train_data, model, params=None):
+    def __init__(self, train_data, algorithm, params=None):
         self.train_data = train_data
         self.params = params
-        self.model = model
+        self.algorithm = algorithm
 
     @step
-    def execute(self):
-        print("Hemos entrau menor")
+    def train(self):
         X_train, y_train = self.train_data
         self.model = self.model.grid_search(X_train, y_train)
         return self.model
